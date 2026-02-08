@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>나랑 결혼해줄래?</title>
 
-  <meta property="og:title" content="💍 나랑 결혼해줄래?" />
-  <meta property="og:description" content="아니오는 끝까지 도망갑니다 😏" />
-
   <style>
     body {
       margin: 0;
@@ -16,12 +13,20 @@
       font-family: Arial, sans-serif;
       overflow: hidden;
       position: relative;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
+      margin-top: 70px;
       font-size: 2.4rem;
-      margin-top: 60px;
+    }
+
+    button {
+      font-size: 2rem;
+      padding: 22px 60px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
     }
 
     #yes {
@@ -29,10 +34,6 @@
       bottom: 60px;
       left: 50%;
       transform: translateX(-50%);
-      font-size: 2rem;
-      padding: 22px 60px;
-      border: none;
-      border-radius: 20px;
       background: #ff6b81;
       color: white;
       z-index: 10;
@@ -40,25 +41,8 @@
 
     #no {
       position: fixed;
-      font-size: 2rem;
-      padding: 22px 60px;
-      border: none;
-      border-radius: 20px;
       background: #ccc;
       z-index: 9;
-    }
-
-    .firework {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      animation: boom 1s ease-out forwards;
-    }
-
-    @keyframes boom {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(6); opacity: 0; }
     }
   </style>
 </head>
@@ -72,15 +56,15 @@
   <script>
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
-    let count = 0;
+    let noCount = 0;
 
     function moveNo() {
       const padding = 20;
-      const btnWidth = noBtn.offsetWidth;
-      const btnHeight = noBtn.offsetHeight;
+      const w = noBtn.offsetWidth;
+      const h = noBtn.offsetHeight;
 
-      const x = Math.random() * (window.innerWidth - btnWidth - padding);
-      const y = Math.random() * (window.innerHeight - btnHeight - 180);
+      const x = Math.random() * (window.innerWidth - w - padding);
+      const y = Math.random() * (window.innerHeight - h - 200);
 
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
@@ -89,43 +73,38 @@
     // 초기 위치
     moveNo();
 
-    // 모바일 터치 접근 시 이동
+    // 접근하면 도망 (모바일/PC 둘 다)
     noBtn.addEventListener("touchstart", moveNo);
     noBtn.addEventListener("mouseenter", moveNo);
 
+    // 아니오 클릭 로직
     noBtn.addEventListener("click", () => {
-      count++;
+      noCount++;
 
-      if (count <= 3) {
-        alert(`와… ${count}번이나 잡았네 😳\n한 번 더!`);
+      if (noCount === 1) {
+        alert("두 번만 더 누르면 너의 거절 이해할게");
         moveNo();
-      } else if (count === 4) {
-        alert("진짜 진짜 마지막이다… 딱 한 번만 더 😤");
-        moveNo();
-      } else {
+      } 
+      else if (noCount === 2) {
+        alert("알겠어.. 한 번만 더 누르면\n너의 거절 이해 진짜로 할게");
         noBtn.style.display = "none";
-        alert("이제 선택지는 하나뿐 😏");
       }
     });
 
+    // 네 클릭 → 강아지 임티 + 축하 문구
     yesBtn.addEventListener("click", () => {
       document.body.innerHTML = `
-        <h1 style="margin-top:100px;">🎉 축하합니다! 🎉</h1>
-        <p style="text-align:center; font-size:1.8rem;">결혼 확정 💍</p>
-        <div style="text-align:center;">
-          <img src="https://i.imgur.com/4AiXzf8.jpeg"
-               style="width:260px; border-radius:20px;">
+        <h1 style="margin-top:80px; font-size:2.6rem;">🎉 축하해! 🎉</h1>
+        <p style="font-size:1.6rem; margin-top:20px;">
+          우리 이제 시작이네 💍
+        </p>
+        <div style="font-size:3rem; margin-top:40px; line-height:1.5;">
+          🐶🐶🐶🐶🐶<br>
+          🐕🐕🐕🐕🐕<br>
+          🐾🐾🐾🐾🐾<br>
+          🐶💖🐶💖🐶
         </div>
       `;
-
-      for (let i = 0; i < 40; i++) {
-        const fw = document.createElement("div");
-        fw.className = "firework";
-        fw.style.background = `hsl(${Math.random()*360},100%,50%)`;
-        fw.style.left = Math.random() * window.innerWidth + "px";
-        fw.style.top = Math.random() * window.innerHeight + "px";
-        document.body.appendChild(fw);
-      }
     });
   </script>
 
