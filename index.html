@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>나랑 결혼해줄래?</title>
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background: #fff5f8;
+    }
+
+    h1 {
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+    }
+
+    .buttons {
+      position: relative;
+      width: 300px;
+      height: 150px;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #yes {
+      background-color: #ff6b81;
+      color: white;
+    }
+
+    #no {
+      position: absolute;
+      background-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>💍 나랑 결혼해줄래?</h1>
+
+  <div class="buttons">
+    <button id="yes" onclick="alert('이미 승낙한 거다 💕')">
+      네
+    </button>
+    <button id="no">
+      아니오
+    </button>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+
+    noBtn.addEventListener("mouseenter", () => {
+      const x = Math.random() * 200;
+      const y = Math.random() * 100;
+
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    });
+  </script>
+</body>
+</html>
