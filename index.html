@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>나랑 결혼해줄래?</title>
 
   <meta property="og:title" content="💍 나랑 결혼해줄래?" />
@@ -12,49 +13,52 @@
       margin: 0;
       height: 100vh;
       background: #fff5f8;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       font-family: Arial, sans-serif;
       overflow: hidden;
+      position: relative;
     }
 
     h1 {
-      font-size: 3rem;
-      margin-bottom: 40px;
-    }
-
-    button {
-      font-size: 2rem;
-      padding: 20px 50px;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
+      text-align: center;
+      font-size: 2.4rem;
+      margin-top: 60px;
     }
 
     #yes {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      padding: 22px 60px;
+      border: none;
+      border-radius: 20px;
       background: #ff6b81;
       color: white;
-      z-index: 1;
+      z-index: 10;
     }
 
     #no {
-      position: absolute;
+      position: fixed;
+      font-size: 2rem;
+      padding: 22px 60px;
+      border: none;
+      border-radius: 20px;
       background: #ccc;
+      z-index: 9;
     }
 
     .firework {
-      position: absolute;
-      width: 10px;
-      height: 10px;
+      position: fixed;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      animation: explode 1s infinite;
+      animation: boom 1s ease-out forwards;
     }
 
-    @keyframes explode {
+    @keyframes boom {
       0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(5); opacity: 0; }
+      100% { transform: scale(6); opacity: 0; }
     }
   </style>
 </head>
@@ -62,60 +66,67 @@
 
   <h1 id="title">💍 나랑 결혼해줄래?</h1>
 
-  <button id="yes" onclick="yesClick()">네</button>
+  <button id="yes">네</button>
   <button id="no">아니오</button>
 
   <script>
     const noBtn = document.getElementById("no");
-    let catchCount = 0;
+    const yesBtn = document.getElementById("yes");
+    let count = 0;
 
     function moveNo() {
-      const x = Math.random() * (window.innerWidth - 150);
-      const y = Math.random() * (window.innerHeight - 150);
+      const padding = 20;
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+
+      const x = Math.random() * (window.innerWidth - btnWidth - padding);
+      const y = Math.random() * (window.innerHeight - btnHeight - 180);
+
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
 
-    // 계속 도망
-    setInterval(moveNo, 800);
+    // 초기 위치
+    moveNo();
 
-    noBtn.addEventListener("mouseenter", moveNo);
+    // 모바일 터치 접근 시 이동
     noBtn.addEventListener("touchstart", moveNo);
+    noBtn.addEventListener("mouseenter", moveNo);
 
     noBtn.addEventListener("click", () => {
-      catchCount++;
+      count++;
 
-      if (catchCount <= 3) {
-        alert(`와… ${catchCount}번이나 잡았네 😳\n한 번 더 해봐`);
+      if (count <= 3) {
+        alert(`와… ${count}번이나 잡았네 😳\n한 번 더!`);
         moveNo();
-      } else if (catchCount === 4) {
-        alert("진짜 마지막이다… 딱 한 번만 더 😤");
+      } else if (count === 4) {
+        alert("진짜 진짜 마지막이다… 딱 한 번만 더 😤");
         moveNo();
       } else {
-        // 아니오 완전 제거
         noBtn.style.display = "none";
-        alert("선택지는 하나뿐이네 😏");
+        alert("이제 선택지는 하나뿐 😏");
       }
     });
 
-    function yesClick() {
+    yesBtn.addEventListener("click", () => {
       document.body.innerHTML = `
-        <h1>🎉 축하합니다! 🎉</h1>
-        <p style="font-size:2rem;">결혼 확정 💍</p>
-        <img src="https://i.imgur.com/4AiXzf8.jpeg" 
-             style="width:250px; border-radius:20px; margin-top:20px;">
+        <h1 style="margin-top:100px;">🎉 축하합니다! 🎉</h1>
+        <p style="text-align:center; font-size:1.8rem;">결혼 확정 💍</p>
+        <div style="text-align:center;">
+          <img src="https://i.imgur.com/4AiXzf8.jpeg"
+               style="width:260px; border-radius:20px;">
+        </div>
       `;
 
-      // 폭죽 생성
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 40; i++) {
         const fw = document.createElement("div");
         fw.className = "firework";
-        fw.style.background = \`hsl(\${Math.random()*360},100%,50%)\`;
-        fw.style.left = Math.random()*window.innerWidth + "px";
-        fw.style.top = Math.random()*window.innerHeight + "px";
+        fw.style.background = `hsl(${Math.random()*360},100%,50%)`;
+        fw.style.left = Math.random() * window.innerWidth + "px";
+        fw.style.top = Math.random() * window.innerHeight + "px";
         document.body.appendChild(fw);
       }
-    }
+    });
   </script>
 
 </body>
