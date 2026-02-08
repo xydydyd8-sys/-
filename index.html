@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>나랑 결혼해줄래?</title>
+  <title>확인 절차</title>
 
   <style>
     body {
@@ -12,13 +12,17 @@
       background: #fff5f8;
       font-family: Arial, sans-serif;
       overflow: hidden;
-      position: relative;
       text-align: center;
     }
 
     h1 {
-      margin-top: 70px;
+      margin-top: 80px;
       font-size: 2.4rem;
+    }
+
+    p {
+      font-size: 1.6rem;
+      margin-top: 20px;
     }
 
     button {
@@ -27,6 +31,22 @@
       border: none;
       border-radius: 20px;
       cursor: pointer;
+      margin: 15px;
+    }
+
+    .yes {
+      background: #ff6b81;
+      color: white;
+    }
+
+    .no {
+      background: #ccc;
+    }
+
+    #no {
+      position: fixed;
+      background: #ccc;
+      z-index: 9;
     }
 
     #yes {
@@ -38,67 +58,82 @@
       color: white;
       z-index: 10;
     }
-
-    #no {
-      position: fixed;
-      background: #ccc;
-      z-index: 9;
-    }
   </style>
 </head>
 <body>
 
-  <h1 id="title">💍 나랑 결혼해줄래?</h1>
+<script>
+  let noCount = 0;
 
-  <button id="yes">네</button>
-  <button id="no">아니오</button>
+  // 1단계
+  function step1() {
+    document.body.innerHTML = `
+      <h1>홍연진 맞으십니까?</h1>
+      <button class="yes" onclick="step2()">네</button>
+      <button class="no" onclick="exit()">아니오</button>
+    `;
+  }
 
-  <script>
+  // 2단계
+  function step2() {
+    document.body.innerHTML = `
+      <h1>퀴즈</h1>
+      <p>백지원은 방어를 제일 좋아한다</p>
+      <button class="yes" onclick="step3()">O</button>
+      <button class="no" onclick="exit()">X</button>
+    `;
+  }
+
+  // 나가라 화면
+  function exit() {
+    document.body.innerHTML = `
+      <h1>❌ 접근 불가</h1>
+      <p>당장 이 페이지에서 벗어나시오!</p>
+    `;
+  }
+
+  // 3단계 (결혼 페이지)
+  function step3() {
+    document.body.innerHTML = `
+      <h1>💍 나랑 결혼해줄래?</h1>
+      <button id="yes">네</button>
+      <button id="no">아니오</button>
+    `;
+
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
-    let noCount = 0;
+    noCount = 0;
 
     function moveNo() {
-      const padding = 20;
       const w = noBtn.offsetWidth;
       const h = noBtn.offsetHeight;
-
-      const x = Math.random() * (window.innerWidth - w - padding);
+      const x = Math.random() * (window.innerWidth - w);
       const y = Math.random() * (window.innerHeight - h - 200);
-
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
 
-    // 초기 위치
     moveNo();
 
-    // 접근하면 도망 (모바일/PC 둘 다)
     noBtn.addEventListener("touchstart", moveNo);
     noBtn.addEventListener("mouseenter", moveNo);
 
-    // 아니오 클릭 로직
     noBtn.addEventListener("click", () => {
       noCount++;
-
       if (noCount === 1) {
         alert("두 번만 더 누르면 너의 거절 이해할게");
         moveNo();
-      } 
-      else if (noCount === 2) {
+      } else if (noCount === 2) {
         alert("알겠어.. 한 번만 더 누르면\n너의 거절 이해 진짜로 할게");
         noBtn.style.display = "none";
       }
     });
 
-    // 네 클릭 → 강아지 임티 + 축하 문구
     yesBtn.addEventListener("click", () => {
       document.body.innerHTML = `
-        <h1 style="margin-top:80px; font-size:2.6rem;">🎉 축하해! 🎉</h1>
-        <p style="font-size:1.6rem; margin-top:20px;">
-          우리 이제 시작이네 💍
-        </p>
-        <div style="font-size:3rem; margin-top:40px; line-height:1.5;">
+        <h1 style="margin-top:80px;">🎉 축하해! 🎉</h1>
+        <p>우리 이제 시작이네 💍</p>
+        <div style="font-size:3rem; margin-top:40px;">
           🐶🐶🐶🐶🐶<br>
           🐕🐕🐕🐕🐕<br>
           🐾🐾🐾🐾🐾<br>
@@ -106,7 +141,11 @@
         </div>
       `;
     });
-  </script>
+  }
+
+  // 시작
+  step1();
+</script>
 
 </body>
 </html>
